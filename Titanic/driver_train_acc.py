@@ -33,9 +33,9 @@ dev_idx, lockbox_idx = train_test_split(
 dev_df, lockbox_df = train_det.loc[dev_idx].copy(), train_det.loc[lockbox_idx].copy()
 y_dev, y_lockbox = y_full.loc[dev_idx], y_full.loc[lockbox_idx]
 
-# Grouped on Ticket (fix for an ml-guard finding: a plain StratifiedKFold let
-# a family/ticket span two folds, leaking one member's label into another
-# member's FamilySurvivalRate feature within the same outer fold).
+# Grouped on Ticket: a plain StratifiedKFold let a family/ticket span two
+# folds, leaking one member's label into another member's
+# FamilySurvivalRate feature within the same outer fold.
 cv = StratifiedGroupKFold(n_splits=5, shuffle=True, random_state=RANDOM_STATE)
 
 
@@ -92,7 +92,7 @@ print("NaNs in X_dev:", X_dev.isnull().sum().sum(), " X_lockbox:", X_lockbox.isn
 
 # =====================================================================
 # Candidate models: narrower / more-regularized grids than the previous
-# 60-iter wide search. n_iter capped at 25 per model (guardrail). Every
+# 60-iter wide search. n_iter capped at 25 per model to bound runtime. Every
 # model is wrapped so ClusterFeatureAdder is refit inside each CV fold.
 # =====================================================================
 xgb_param_dist = {
@@ -161,7 +161,7 @@ for name, model in candidates.items():
     print(f"[{time.time()-t0:.0f}s] {name:16s} dev-CV folds={np.round(scores,4)} "
           f"mean={scores.mean():.4f} min={scores.min():.4f} max={scores.max():.4f} std={scores.std():.4f}")
 
-# Selection rule: highest MEAN fold accuracy (changed from min per user request)
+# Selection rule: highest MEAN fold accuracy (average across folds, not worst-case fold)
 winner_name = max(fold_scores, key=lambda k: fold_scores[k].mean())
 winner_model = candidates[winner_name]
 print(f"\n[{time.time()-t0:.0f}s] Selected '{winner_name}' by highest mean dev-CV fold accuracy "

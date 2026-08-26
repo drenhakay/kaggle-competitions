@@ -1,9 +1,10 @@
 """
 Titanic Phase-2 bounded model comparison.
 
-Guardrails in force (user-confirmed):
+Design decisions for this pipeline:
 - Metric: plain accuracy (matches Kaggle scoring for this competition).
-- Selection rule: highest MEAN CV fold accuracy (changed from min per user request).
+- Selection rule: highest MEAN CV fold accuracy (average fold performance,
+  not the worst-case fold).
 - Candidates (max 4): LogisticRegression, RandomForest, XGBoost, soft-voting
   ensemble of tuned RF+XGB.
 - Search budget: RandomizedSearchCV n_iter=25 per model (narrower, more
@@ -12,9 +13,9 @@ Guardrails in force (user-confirmed):
   Ticket -- same splitter used for the OOF family-survival-rate feature and
   for model search/selection, run over a DEVELOPMENT partition only (85% of
   train) so it no longer shares folds with the held-out lockbox. Grouping on
-  Ticket (fixed after an ml-guard finding) stops a family/ticket from
-  spanning two folds, which previously let one member's label leak into
-  another member's FamilySurvivalRate feature within the same outer fold.
+  Ticket stops a family/ticket from spanning two folds, which would
+  otherwise let one member's label leak into another member's
+  FamilySurvivalRate feature within the same outer fold.
 - New: ~15% stratified "lockbox" holdout, carved out before ANY fitting, used
   exactly once at the end for an honest read on the winning model. Never used
   for selection.
@@ -30,9 +31,9 @@ Guardrails in force (user-confirmed):
   encoders, per-Title Age median, StandardScaler+KMeans cluster) is now fit
   ONLY on the partition that is allowed to be fit on for that pass (dev-only
   for the dev/lockbox pass; full-train for the final test-prediction pass) --
-  this fixes the "fit on entire X_train before CV split" leakage the audit
-  flagged for the cluster feature, as a side effect of building the lockbox
-  correctly (not a separate scope item).
+  this fixes a "fit on entire X_train before CV split" leakage issue for
+  the cluster feature, as a side effect of building the lockbox correctly
+  (not a separate scope item).
 """
 from pathlib import Path
 
@@ -146,10 +147,10 @@ class ClusterFeatureAdder(BaseEstimator, TransformerMixin):
 
     Wrapped as a Pipeline step (rather than a precomputed static column) so
     RandomizedSearchCV/cross_val_score refit the scaler+KMeans on each CV
-    fold's OWN training rows -- this is the fix for the "cluster fit on all
-    of dev before the inner CV split" leakage the audit flagged (fitting a
-    static column once let every inner validation fold's cluster label be
-    influenced by that fold's own held-out rows).
+    fold's OWN training rows -- this fixes a "cluster fit on all of dev
+    before the inner CV split" leakage issue (fitting a static column once
+    let every inner validation fold's cluster label be influenced by that
+    fold's own held-out rows).
     """
     def __init__(self, cluster_features, n_clusters=4, random_state=RANDOM_STATE):
         self.cluster_features = cluster_features
