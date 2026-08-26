@@ -1,0 +1,8 @@
+.DS_Store
+.ipynb_checkpoints/
+__pycache__/
+
+# Kaggle competition data (not redistributable) and generated submissions
+train.csv
+test.csv
+submission*.csv
