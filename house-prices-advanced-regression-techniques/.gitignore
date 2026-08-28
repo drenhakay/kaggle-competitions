@@ -1,0 +1,7 @@
+# Kaggle competition data — do not redistribute
+*.csv
+data_description.txt
+
+# notebook cruft
+.ipynb_checkpoints/
+__pycache__/
