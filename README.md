@@ -7,3 +7,4 @@ Competition data files aren't committed (per Kaggle's terms) — download `train
 ## Competitions
 
 - [Titanic](./Titanic) — binary classification, survival prediction.
+- [House Prices: Advanced Regression Techniques](./house-prices-advanced-regression-techniques) — regression, sale price prediction.
