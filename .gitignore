@@ -6,3 +6,9 @@ __pycache__/
 train.csv
 test.csv
 submission*.csv
+
+# Optiver: Kaggle-provided time-series API package, helper, and example data
+optiver-trading-at-the-close/optiver2023/
+optiver-trading-at-the-close/example_test_files/
+optiver-trading-at-the-close/public_timeseries_testing_util.py
+revealed_targets.csv
