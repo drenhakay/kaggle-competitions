@@ -1,0 +1,58 @@
+{
+  "feature_set": "base+digits",
+  "features": [
+    "Age",
+    "Annual_Income_USD",
+    "Daily_Commute_km",
+    "Number_of_Cars_Owned",
+    "Charging_Stations_Near_Home",
+    "Charging_Stations_Near_Work",
+    "Environmental_Concern_Level",
+    "Gender",
+    "City_Type",
+    "Current_Car_Type",
+    "Home_Charging_Possible",
+    "Subsidy_Available",
+    "Range_Anxiety_Level",
+    "income_is_30k",
+    "Daily_Commute_is_5km",
+    "Age_d0",
+    "Age_d1",
+    "Annual_Income_USD_d0",
+    "Annual_Income_USD_d1",
+    "Annual_Income_USD_d2",
+    "Annual_Income_USD_d3",
+    "Daily_Commute_km_d-4",
+    "Daily_Commute_km_d-3",
+    "Daily_Commute_km_d-2",
+    "Daily_Commute_km_d-1",
+    "Daily_Commute_km_d0",
+    "Daily_Commute_km_d1"
+  ],
+  "lgb_params": {
+    "objective": "binary",
+    "learning_rate": 0.02,
+    "max_bin": 511,
+    "num_leaves": 31,
+    "max_depth": 6,
+    "min_child_samples": 100,
+    "feature_fraction": 0.8,
+    "bagging_fraction": 0.8,
+    "bagging_freq": 1,
+    "reg_alpha": 0.1,
+    "reg_lambda": 5.0
+  },
+  "n_estimators": 2331,
+  "cv": {
+    "splitter": "StratifiedKFold(5, shuffle=True, random_state=42)",
+    "fold_auc": [
+      0.942694,
+      0.94358,
+      0.944758,
+      0.944139,
+      0.943788
+    ],
+    "min_fold": 0.942694,
+    "oof_auc": 0.943784
+  }
+}

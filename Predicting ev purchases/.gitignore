@@ -1,0 +1,19 @@
+# Kaggle competition data — do not redistribute
+*.csv
+
+# generated artifacts
+oof/
+folds.npy
+catboost_info/
+*.log
+
+# scratch: NN tuning + feature experiments (findings live in NOTES.md)
+nn_optimiser.py
+features_ev_round2.py
+fe_*.py
+fe_*_report.md
+
+# notebook / python cruft
+.ipynb_checkpoints/
+__pycache__/
+.DS_Store
