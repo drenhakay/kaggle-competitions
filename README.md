@@ -1,8 +1,8 @@
 # Kaggle Competitions
 
-Solutions and notes from Kaggle competitions, done to build ML and applied maths skills.
+Solutions and notes from Kaggle competitions.
 
-Competition data files aren't committed (per Kaggle's terms) — download `train.csv`/`test.csv` from each competition's Kaggle page to reproduce.
+Download `train.csv`/`test.csv` from each competition's Kaggle page to reproduce.
 
 ## Competitions
 
